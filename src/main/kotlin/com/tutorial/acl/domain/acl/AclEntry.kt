@@ -16,13 +16,13 @@ class AclEntry (
     var mask: Int? = null,
 
     @Column(nullable = false)
-    var granting: Boolean = false,
+    var granting: Boolean = true,
 
     @Column(nullable = false)
-    var auditSuccess: Boolean = false,
+    var auditSuccess: Boolean = true,
 
     @Column(nullable = false)
-    var auditFailure: Boolean = false,
+    var auditFailure: Boolean = true,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aclObjectIdentity", nullable = false)
