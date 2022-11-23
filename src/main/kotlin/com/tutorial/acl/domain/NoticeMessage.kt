@@ -7,7 +7,7 @@ import javax.persistence.Id
 @Entity
 class NoticeMessage(
     @Id @Column
-    val id: Int,
+    val id: Int? = null,
     @Column
-    var content: String
+    var content: String? = null
 )
