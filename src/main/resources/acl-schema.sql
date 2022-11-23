@@ -1,3 +1,9 @@
+CREATE TABLE IF NOT EXISTS system_message (
+    id integer not null,
+    content varchar(255),
+    primary key (id)
+);
+
 CREATE TABLE IF NOT EXISTS acl_sid (
     id bigint NOT NULL AUTO_INCREMENT,
     principal tinyint NOT NULL,
