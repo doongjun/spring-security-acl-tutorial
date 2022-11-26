@@ -1,5 +1,6 @@
 package com.tutorial.acl
 
+import com.tutorial.acl.domain.Board
 import com.tutorial.acl.domain.NoticeMessage
 import com.tutorial.acl.domain.acl.AclClass
 import com.tutorial.acl.domain.acl.AclEntry
@@ -16,7 +17,8 @@ class InitDb(
 ) {
     @PostConstruct
     fun init() {
-        initService.dbInit1()
+//        initService.dbInit1()
+        initService.dbInit2()
     }
 
     companion object {
@@ -102,6 +104,48 @@ class InitDb(
                     mask = 2
                 )
                 persistObjects(aclEntry1, aclEntry2, aclEntry3, aclEntry4, aclEntry5, aclEntry6, aclEntry7)
+            }
+
+            fun dbInit2() {
+                val userA = AclSid(principal = true, sid = "userA")
+                val userB = AclSid(principal = true, sid = "userB")
+                val roleEditor = AclSid(principal = false, sid = "ROLE_EDITOR")
+                persistObjects(userA, userB, roleEditor)
+
+                val aclClass = AclClass(className = "com.tutorial.acl.domain.Board")
+                persistObjects(aclClass)
+
+                val notice = Board(id = 1, name = "공지사항")
+                val freeBoard = Board(id = 2, name = "자유게시판")
+                persistObjects(notice, freeBoard)
+
+                val aclObjectIdentity1 = AclObjectIdentity(
+                    objectClass = aclClass,
+                    objectIdIdentity = 1,
+                    owner = roleEditor,
+                    entriesInheriting = false
+                )
+                val aclObjectIdentity2 = AclObjectIdentity(
+                    objectClass = aclClass,
+                    objectIdIdentity = 2,
+                    owner = roleEditor,
+                    entriesInheriting = false
+                )
+                persistObjects(aclObjectIdentity1, aclObjectIdentity2)
+
+                val aclEntry1 = AclEntry(
+                    aclObject = aclObjectIdentity1,
+                    aceOrder = 1,
+                    aclSid = userA,
+                    mask = 1
+                )
+                val aclEntry2 = AclEntry(
+                    aclObject = aclObjectIdentity1,
+                    aceOrder = 2,
+                    aclSid = userA,
+                    mask = 2
+                )
+                persistObjects(aclEntry1, aclEntry2)
             }
 
             private fun persistObjects(vararg objects: Any) =
